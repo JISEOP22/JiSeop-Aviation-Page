@@ -1,0 +1,941 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --navy: #0A1628;
+    --navy-mid: #0E2040;
+    --sky: #1A6FD4;
+    --sky-light: #3B8EEA;
+    --silver: #C8D4E4;
+    --white: #F4F8FF;
+    --accent: #E8A020;
+    --text-muted: #8BA3BF;
+  }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 18px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid rgba(200,212,228,0.15);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: var(--sky);
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .logo-icon::after {
+    content: '✈';
+    font-size: 16px;
+    color: white;
+    position: absolute;
+  }
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--white);
+  }
+  .logo-sub {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    display: block;
+    margin-top: -4px;
+  }
+  nav ul {
+    list-style: none;
+    display: flex; gap: 36px;
+  }
+  nav ul li a {
+    color: var(--silver);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+  }
+  nav ul li a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--sky);
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 2px;
+    font-size: 12px !important;
+    letter-spacing: 1.5px !important;
+    font-weight: 500 !important;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 60px 100px;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(10,22,40,0.3) 0%, rgba(10,22,40,0.85) 70%, #0A1628 100%),
+      linear-gradient(135deg, #0A1628 0%, #0E2B5A 50%, #1A3A70 100%);
+  }
+  /* Grid overlay */
+  .hero-grid {
+    position: absolute; inset: 0; overflow: hidden; opacity: 0.08;
+  }
+  .hero-grid svg { width: 100%; height: 100%; }
+  /* Altitude lines */
+  .altitude-lines {
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 45%;
+    opacity: 0.12;
+  }
+  .altitude-lines svg { width: 100%; height: 100%; }
+
+  /* Big aircraft silhouette */
+  .hero-aircraft {
+    position: absolute;
+    right: -40px; top: 50%;
+    transform: translateY(-55%);
+    width: 55%;
+    opacity: 0.18;
+  }
+  .hero-aircraft svg { width: 100%; }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 680px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--accent);
+    display: block;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 88px;
+    line-height: 0.92;
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+    color: var(--white);
+  }
+  .hero-title span {
+    color: var(--sky-light);
+    display: block;
+  }
+  .hero-desc {
+    font-size: 15px;
+    color: var(--silver);
+    line-height: 1.8;
+    max-width: 480px;
+    margin-bottom: 44px;
+    font-weight: 300;
+  }
+  .hero-actions {
+    display: flex; gap: 16px; align-items: center;
+  }
+  .btn-primary {
+    background: var(--sky);
+    color: white;
+    padding: 14px 36px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-decoration: none;
+    border-radius: 2px;
+    display: inline-block;
+    transition: background 0.2s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--sky-light); }
+  .btn-outline {
+    border: 1px solid rgba(200,212,228,0.4);
+    color: var(--silver);
+    padding: 14px 32px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    border-radius: 2px;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--silver); color: var(--white); }
+
+  /* Stats bar */
+  .stats-bar {
+    background: rgba(26,111,212,0.12);
+    border-top: 1px solid rgba(26,111,212,0.25);
+    border-bottom: 1px solid rgba(26,111,212,0.25);
+    padding: 32px 60px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .stat-item {
+    text-align: center;
+    border-right: 0.5px solid rgba(200,212,228,0.1);
+    padding: 8px 0;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+  .stat-unit {
+    font-size: 22px;
+    color: var(--sky-light);
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  /* ABOUT */
+  .section {
+    padding: 100px 60px;
+  }
+  .section-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    width: 24px; height: 1px; background: var(--accent);
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1.05;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-text p {
+    color: var(--silver);
+    font-size: 15px;
+    line-height: 1.9;
+    font-weight: 300;
+    margin-bottom: 16px;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-card {
+    background: var(--navy-mid);
+    border: 0.5px solid rgba(200,212,228,0.12);
+    border-radius: 4px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--sky);
+  }
+  .about-card-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    opacity: 0.6;
+  }
+  .about-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .about-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .cert-list {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 24px;
+  }
+  .cert-tag {
+    background: rgba(26,111,212,0.15);
+    border: 0.5px solid rgba(26,111,212,0.4);
+    color: var(--sky-light);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    padding: 5px 12px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  /* SERVICES */
+  .services-section {
+    background: var(--navy-mid);
+    padding: 100px 60px;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(200,212,228,0.08);
+    border: 0.5px solid rgba(200,212,228,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 60px;
+  }
+  .service-card {
+    background: var(--navy-mid);
+    padding: 44px 36px;
+    position: relative;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .service-card:hover {
+    background: rgba(26,111,212,0.08);
+  }
+  .service-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: rgba(26,111,212,0.15);
+    line-height: 1;
+    margin-bottom: 20px;
+    display: block;
+    letter-spacing: 2px;
+  }
+  .service-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .service-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+  .service-card p {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .service-arrow {
+    position: absolute;
+    bottom: 36px; right: 36px;
+    color: var(--sky);
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .service-card:hover .service-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  /* FLEET */
+  .fleet-section {
+    padding: 100px 60px;
+  }
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 60px;
+  }
+  .fleet-card {
+    background: var(--navy-mid);
+    border: 0.5px solid rgba(200,212,228,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .fleet-visual {
+    height: 180px;
+    background: linear-gradient(135deg, #0E2040 0%, #1A3A70 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .fleet-visual::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 60% 50%, rgba(26,111,212,0.2), transparent 70%);
+  }
+  .fleet-info { padding: 28px 28px 32px; }
+  .fleet-type {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .fleet-info h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .fleet-specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 0.5px solid rgba(200,212,228,0.08);
+  }
+  .spec-item label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .spec-item span {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  /* NEWS */
+  .news-section {
+    background: var(--navy-mid);
+    padding: 80px 60px;
+  }
+  .news-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 1px;
+    background: rgba(200,212,228,0.08);
+    margin-top: 50px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .news-card {
+    background: var(--navy-mid);
+    padding: 32px;
+  }
+  .news-card.featured {
+    padding: 44px;
+    border-right: 0.5px solid rgba(200,212,228,0.08);
+  }
+  .news-date {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .news-card h3 {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+  .news-card.featured h3 { font-size: 24px; }
+  .news-card p {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .news-tag {
+    display: inline-block;
+    background: rgba(232,160,32,0.15);
+    border: 0.5px solid rgba(232,160,32,0.3);
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .news-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--sky-light);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    margin-top: 20px;
+    text-transform: uppercase;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 100px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(26,111,212,0.18) 0%, transparent 70%);
+  }
+  .cta-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 68px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .cta-section p {
+    color: var(--silver);
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #050D1A;
+    padding: 60px 60px 40px;
+    border-top: 0.5px solid rgba(200,212,228,0.1);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 48px;
+  }
+  .footer-brand p {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.7;
+    font-weight: 300;
+    margin-top: 16px;
+    max-width: 280px;
+  }
+  .footer-col h4 {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--silver);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li {
+    margin-bottom: 10px;
+  }
+  .footer-col ul li a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 300;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--silver); }
+  .footer-bottom {
+    border-top: 0.5px solid rgba(200,212,228,0.08);
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom p {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  .footer-cert {
+    display: flex; gap: 16px;
+  }
+  .footer-cert span {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    border: 0.5px solid rgba(200,212,228,0.15);
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Horizontal rule accent */
+  .divider {
+    height: 0.5px;
+    background: rgba(200,212,228,0.08);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-icon"></div>
+    <div>
+      <div class="logo-text">JISEOP AVIATION</div>
+      <span class="logo-sub">AEROSPACE & DEFENSE</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#">회사소개</a></li>
+    <li><a href="#">사업분야</a></li>
+    <li><a href="#">항공기 현황</a></li>
+    <li><a href="#">인증 & 안전</a></li>
+    <li><a href="#">뉴스룸</a></li>
+    <li><a href="#" class="nav-cta">문의하기</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Grid lines -->
+  <div class="hero-grid">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
+      <defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="#4A8FD4" stroke-width="0.5"/></pattern></defs>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+      <line x1="0" y1="0" x2="1400" y2="900" stroke="#4A8FD4" stroke-width="0.5" opacity="0.3"/>
+      <line x1="700" y1="0" x2="700" y2="900" stroke="#4A8FD4" stroke-width="0.5" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <!-- Aircraft silhouette -->
+  <div class="hero-aircraft">
+    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+      <!-- Fuselage -->
+      <ellipse cx="400" cy="200" rx="320" ry="40" fill="rgba(74,143,212,0.5)"/>
+      <!-- Nose cone -->
+      <path d="M 720 200 Q 800 200 800 200 Q 790 185 720 195" fill="rgba(74,143,212,0.6)"/>
+      <!-- Main wings -->
+      <path d="M 380 200 L 500 90 L 540 95 L 420 200 Z" fill="rgba(74,143,212,0.4)"/>
+      <path d="M 380 200 L 500 310 L 540 305 L 420 200 Z" fill="rgba(74,143,212,0.4)"/>
+      <!-- Tail -->
+      <path d="M 100 200 L 60 120 L 90 120 L 130 200 Z" fill="rgba(74,143,212,0.4)"/>
+      <!-- Horizontal stabilizer -->
+      <path d="M 100 200 L 50 230 L 80 240 L 130 205 Z" fill="rgba(74,143,212,0.35)"/>
+      <path d="M 100 200 L 50 170 L 80 160 L 130 195 Z" fill="rgba(74,143,212,0.35)"/>
+      <!-- Engines -->
+      <ellipse cx="430" cy="155" rx="30" ry="10" fill="rgba(26,111,212,0.5)"/>
+      <ellipse cx="430" cy="245" rx="30" ry="10" fill="rgba(26,111,212,0.5)"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">항공 & 방위산업</p>
+    <h1 class="hero-title">
+      PRECISION<br>
+      IN EVERY<br>
+      <span>ALTITUDE</span>
+    </h1>
+    <p class="hero-desc">
+      지섭항공은 국내 최고 수준의 항공 정비·운항 기술로<br>
+      안전하고 신뢰할 수 있는 하늘길을 책임집니다.<br>
+      20년의 운항 경험과 첨단 기술로 미래 항공을 선도합니다.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary">사업분야 보기</button>
+      <a href="#" class="btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        회사 소개 영상
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">20<span class="stat-unit">+</span></div>
+    <div class="stat-label">Years of Operation</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">150<span class="stat-unit">+</span></div>
+    <div class="stat-label">Aircraft Maintained</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">99.8<span class="stat-unit">%</span></div>
+    <div class="stat-label">Safety Record</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">48<span class="stat-unit">K</span></div>
+    <div class="stat-label">Flight Hours</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section">
+  <div class="about-grid">
+    <div class="about-text">
+      <p class="section-eyebrow">ABOUT JISEOP AVIATION</p>
+      <h2 class="section-title">하늘을 향한<br>변함없는 신뢰</h2>
+      <p>지섭항공은 2004년 설립 이래 국내외 항공 정비·운항 서비스 분야에서 최고의 기술력과 안전성을 바탕으로 성장해 왔습니다. ICAO 국제기준과 국토교통부 인증을 모두 충족하는 철저한 품질관리 시스템을 운영합니다.</p>
+      <p>국내 항공사 및 방위산업체와의 긴밀한 협력 아래, 민항기부터 군용 항공기까지 폭넓은 운용 경험을 보유하고 있습니다. 항공 안전은 우리의 최우선 가치입니다.</p>
+      <div class="cert-list">
+        <span class="cert-tag">ICAO 인증</span>
+        <span class="cert-tag">국토교통부</span>
+        <span class="cert-tag">ISO 9001</span>
+        <span class="cert-tag">AS9100D</span>
+        <span class="cert-tag">EASA 승인</span>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="about-card" style="margin-bottom: 20px;">
+        <div class="about-card-icon">🛡️</div>
+        <h3>안전 최우선 원칙</h3>
+        <p>모든 작업 공정에 이중·삼중 검증 시스템을 적용하여 무결점 품질을 실현합니다. 국제 항공 안전 기준을 초과하는 내부 지침을 자체적으로 수립·운영합니다.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">⚙️</div>
+        <h3>첨단 정비 기술</h3>
+        <p>최신 디지털 진단 장비와 숙련된 전문 인력을 통해 정확하고 신속한 항공기 정비 서비스를 제공합니다. NDT 비파괴 검사부터 엔진 오버홀까지 종합 솔루션을 보유합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section class="services-section">
+  <p class="section-eyebrow">BUSINESS AREAS</p>
+  <h2 class="section-title">핵심 사업분야</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-num">01</span>
+      <span class="service-icon">✈️</span>
+      <h3>항공기 정비 (MRO)</h3>
+      <p>민항기 및 군용기 정기 점검, 컴포넌트 교체, 엔진 오버홀 등 전주기 정비 서비스를 제공합니다. 최신 설비와 숙련 인력으로 최단 회항시간을 보장합니다.</p>
+      <span class="service-arrow">→</span>
+    </div>
+    <div class="service-card">
+      <span class="service-num">02</span>
+      <span class="service-icon">🚁</span>
+      <h3>헬기 운항 서비스</h3>
+      <p>소방청·해경·응급의료 기관 대상 헬리콥터 운항 및 정비 위탁 서비스를 운영합니다. 24시간 비상출동 체계와 숙련된 조종사 인력을 보유합니다.</p>
+      <span class="service-arrow">→</span>
+    </div>
+    <div class="service-card">
+      <span class="service-num">03</span>
+      <span class="service-icon">🔩</span>
+      <h3>항공부품 공급</h3>
+      <p>국내외 OEM 인증 항공부품의 조달·공급 서비스와 AOG(운항불능) 긴급 지원을 통해 운항 연속성을 확보해 드립니다.</p>
+      <span class="service-arrow">→</span>
+    </div>
+    <div class="service-card">
+      <span class="service-num">04</span>
+      <span class="service-icon">🛡️</span>
+      <h3>방위산업 지원</h3>
+      <p>군용 항공기 창정비 및 성능개량 사업에 참여하며, 방위사업청 및 각 군과의 협력을 통해 국방 항공력 강화에 기여합니다.</p>
+      <span class="service-arrow">→</span>
+    </div>
+    <div class="service-card">
+      <span class="service-num">05</span>
+      <span class="service-icon">📡</span>
+      <h3>항공전자 솔루션</h3>
+      <p>Avionics 시스템 업그레이드, ADS-B 장착, 통신·항법 장비 정비 등 항공전자 전문 서비스를 제공하여 디지털 항공 전환을 지원합니다.</p>
+      <span class="service-arrow">→</span>
+    </div>
+    <div class="service-card">
+      <span class="service-num">06</span>
+      <span class="service-icon">🎓</span>
+      <h3>항공교육 훈련</h3>
+      <p>항공정비사 양성 교육 프로그램 및 항공사 위탁 훈련 서비스를 운영합니다. 실습 중심의 커리큘럼으로 현장 즉시 투입 가능한 전문가를 육성합니다.</p>
+      <span class="service-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- FLEET -->
+<section class="fleet-section">
+  <p class="section-eyebrow">OUR FLEET</p>
+  <h2 class="section-title">운용 항공기 현황</h2>
+  <div class="fleet-grid">
+    <div class="fleet-card">
+      <div class="fleet-visual">✈️</div>
+      <div class="fleet-info">
+        <p class="fleet-type">고정익 / 민항기</p>
+        <h3>Boeing 737 Series</h3>
+        <p style="color:var(--text-muted);font-size:13px;font-weight:300;">국내외 단·중거리 노선 운항에 최적화된 주력 기종. 연료 효율성과 높은 가동률을 자랑합니다.</p>
+        <div class="fleet-specs">
+          <div class="spec-item"><label>좌석</label><span>162석</span></div>
+          <div class="spec-item"><label>항속거리</label><span>5,765km</span></div>
+          <div class="spec-item"><label>순항고도</label><span>FL350</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <div class="fleet-visual">🚁</div>
+      <div class="fleet-info">
+        <p class="fleet-type">회전익 / 특수목적</p>
+        <h3>AW139 & H225</h3>
+        <p style="color:var(--text-muted);font-size:13px;font-weight:300;">해상구조·응급의료·소방 임무에 특화된 중형 헬기. 전천후 운항 성능과 신뢰성을 갖추었습니다.</p>
+        <div class="fleet-specs">
+          <div class="spec-item"><label>임무반경</label><span>400km</span></div>
+          <div class="spec-item"><label>탑재중량</label><span>2,850kg</span></div>
+          <div class="spec-item"><label>최대속도</label><span>306km/h</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <div class="fleet-visual" style="font-size:48px;">🛩️</div>
+      <div class="fleet-info">
+        <p class="fleet-type">고정익 / 훈련기</p>
+        <h3>KT-1 & T-50</h3>
+        <p style="color:var(--text-muted);font-size:13px;font-weight:300;">국산 훈련기 정비 및 성능개량 사업 참여. 공군 협력 MRO 서비스와 창정비를 담당합니다.</p>
+        <div class="fleet-specs">
+          <div class="spec-item"><label>최대고도</label><span>FL500</span></div>
+          <div class="spec-item"><label>최대속도</label><span>Mach 1.4</span></div>
+          <div class="spec-item"><label>가동율</label><span>98.2%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="fleet-card">
+      <div class="fleet-visual" style="font-size:48px;">🛸</div>
+      <div class="fleet-info">
+        <p class="fleet-type">무인항공 / UAV</p>
+        <h3>UAM & Drone 솔루션</h3>
+        <p style="color:var(--text-muted);font-size:13px;font-weight:300;">도심항공교통(UAM) 미래 시장 선점을 위한 드론 정비·검사 체계 구축 및 운용 서비스 사업을 준비합니다.</p>
+        <div class="fleet-specs">
+          <div class="spec-item"><label>사업단계</label><span>개발 중</span></div>
+          <div class="spec-item"><label>파트너</label><span>국내 4개사</span></div>
+          <div class="spec-item"><label>론칭</label><span>2026</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section class="news-section">
+  <p class="section-eyebrow">NEWSROOM</p>
+  <h2 class="section-title">최근 소식</h2>
+  <div class="news-grid">
+    <div class="news-card featured">
+      <span class="news-tag">주요 뉴스</span>
+      <p class="news-date">2025. 11. 18</p>
+      <h3>지섭항공, EASA 유럽항공안전청 Part-145 승인 획득… 유럽 MRO 시장 진출 본격화</h3>
+      <p>지섭항공이 유럽항공안전청(EASA) Part-145 정비조직 승인을 취득함으로써 유럽 내 항공사 대상 정비 서비스 제공이 가능해졌습니다. 이번 승인으로 해외 MRO 시장 진출에 있어 중요한 교두보를 마련했습니다.</p>
+      <a href="#" class="news-link">자세히 보기 →</a>
+    </div>
+    <div class="news-card">
+      <p class="news-date">2025. 10. 30</p>
+      <h3>공군 KT-1 창정비 3차 계약 체결</h3>
+      <p>대한민국 공군과 KT-1 훈련기 3차 창정비 계약을 체결했습니다. 총 18대 규모로, 2026년까지 순차 정비가 진행됩니다.</p>
+      <a href="#" class="news-link">더 보기 →</a>
+    </div>
+    <div class="news-card">
+      <p class="news-date">2025. 09. 15</p>
+      <h3>항공정비사 신규 채용… 전문인력 100명 확대</h3>
+      <p>사업 확장에 따른 항공정비사 100명 신규 채용 계획을 발표했습니다. 경력 및 신입 모두 지원 가능합니다.</p>
+      <a href="#" class="news-link">더 보기 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>함께 하늘을<br>열어가겠습니다</h2>
+  <p>사업 제휴, 정비 서비스 문의, 채용 정보 등 모든 문의를 환영합니다.</p>
+  <button class="btn-primary">문의하기</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <div>
+          <div class="logo-text">JISEOP AVIATION</div>
+          <span class="logo-sub">AEROSPACE & DEFENSE</span>
+        </div>
+      </div>
+      <p>지섭항공주식회사는 안전·기술·신뢰를 핵심 가치로 대한민국 항공산업의 발전에 기여합니다.</p>
+    </div>
+    <div class="footer-col">
+      <h4>사업분야</h4>
+      <ul>
+        <li><a href="#">항공기 정비 (MRO)</a></li>
+        <li><a href="#">헬기 운항 서비스</a></li>
+        <li><a href="#">항공부품 공급</a></li>
+        <li><a href="#">방위산업 지원</a></li>
+        <li><a href="#">항공교육 훈련</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>회사정보</h4>
+      <ul>
+        <li><a href="#">회사 소개</a></li>
+        <li><a href="#">연혁</a></li>
+        <li><a href="#">인증 현황</a></li>
+        <li><a href="#">뉴스룸</a></li>
+        <li><a href="#">채용</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#">대표전화: 042-000-0000</a></li>
+        <li><a href="#">팩스: 042-000-0001</a></li>
+        <li><a href="#">info@jiseopaviation.com</a></li>
+        <li><a href="#">대전광역시 유성구</a></li>
+        <li><a href="#">항공로 123</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 JISEOP AVIATION Co., Ltd. All Rights Reserved.</p>
+    <div class="footer-cert">
+      <span>ICAO</span>
+      <span>EASA</span>
+      <span>AS9100D</span>
+      <span>ISO 9001</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
